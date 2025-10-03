@@ -1,0 +1,13 @@
+{
+  "name": "ga2-89cc25",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {}
+  },
+  "extensions": [
+    "bungcip.better-toml",
+    "davidanson.vscode-markdownlint"
+  ],
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "postCreateCommand": "pip install uv",
+  "remoteUser": "vscode"
+}

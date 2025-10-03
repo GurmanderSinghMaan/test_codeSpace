@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Min Latency Tester</title>
+    <style>
+        body { font-family: sans-serif; max-width: 400px; margin: 40px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        input, button { display: block; width: 100%; margin-bottom: 10px; padding: 8px; box-sizing: border-box; }
+        button { cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 4px; }
+        #results { margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Test Endpoint</h1>
+    <form id="latencyForm">
+        <label for="regions">Regions (e.g., us-east-1, eu-west-1)</label>
+        <input type="text" id="regions" value="us-east-1, ap-southeast-2" required>
+        <label for="threshold">Threshold (ms)</label>
+        <input type="number" id="threshold" value="180" required>
+        <button type="submit" id="submitButton">Get Data</button>
+    </form>
+    <pre id="results"></pre>
+
+    <script>
+        const form = document.getElementById('latencyForm');
+        const results = document.getElementById('results');
+        const API_URL = '/api/latency'; // Assuming relative path works
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            results.textContent = 'Loading...';
+
+            const regions = document.getElementById('regions').value.split(',').map(r => r.trim()).filter(r => r);
+            const threshold = parseInt(document.getElementById('threshold').value, 10);
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ regions: regions, threshold_ms: threshold })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    results.textContent = JSON.stringify(data, null, 2);
+                } else {
+                    results.textContent = `Error ${response.status}: ${data.detail || JSON.stringify(data)}`;
+                }
+            } catch (error) {
+                results.textContent = `Network Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>

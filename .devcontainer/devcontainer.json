@@ -4,10 +4,8 @@
     "ghcr.io/devcontainers/features/python:1": {}
   },
   "extensions": [
-    "bungcip.better-toml",
-    "davidanson.vscode-markdownlint"
+    "astral-sh.uv",
+    "ms-python.python"
   ],
-  // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "postCreateCommand": "pip install uv",
-  "remoteUser": "vscode"
+  "postCreateCommand": "pip install uv"
 }
